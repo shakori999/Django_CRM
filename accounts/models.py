@@ -13,8 +13,8 @@ class Customer(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=20, null=True)
 
-    # def __str__(self):
-        # return self.name
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     CATEGORY = (
