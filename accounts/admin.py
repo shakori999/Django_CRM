@@ -6,4 +6,32 @@ from .models import *
 admin.site.register(Customer)
 admin.site.register(Product)
 admin.site.register(Tag)
-admin.site.register(Order)
+# admin.site.register(Order)
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        'status',
+        'customer',
+    )
+
+    list_filter = (
+        "status",
+        'customer',
+        'product'
+    )
+
+    search_field = (
+        'stauts',
+        'customer',
+    )
+
+    # prepopulated_fields = {
+    #     'customer': ('',)
+    # } 
+
+    raw_id_fields = ('customer',)
+    date_hierarchy = 'date_created'
+    ordering = (
+        'status',
+        'customer',
+    )

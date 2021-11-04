@@ -15,12 +15,16 @@
             <table class="table table-sm">
                 <tr>
                     <th>Customer</th>
-                    <th>Orders</th>
+                    <th>phone</th>
                 </tr>
 
                 {% for customer in customers %}
                     <tr>
-                        <td>{{ customer.name }}</td>
+                        <td>
+                            <a href='{% url "customer" customer.id %}' class='btn btn-sm btn-info'>
+                                {{ customer.name }}
+                            </a>
+                        </td>
                         <td>{{ customer.phone}}</td>
                     </tr>
                 {% endfor %}
@@ -46,8 +50,8 @@
                        <td>{{ i.product}}</td>
                        <td>{{ i.date_created}}</td>
                        <td>{{ i.status}}</td>
-                       <td><a href=""> Update</a></td>
-                       <td><a href=""> Delete </a></td>
+                       <td><a href="" class='btn btn-sm btn-info'> Update</a></td>
+                       <td><a href="" class='btn btn-sm btn-danger'> Delete </a></td>
                     </tr>
                 {% endfor %}
             </table>
