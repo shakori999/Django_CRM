@@ -20,17 +20,15 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            phone = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
 
-            group = Group.objects.get(name='customers')
-            user.groups.add(group)
-            Customer.objects.create(
-                user=user,
-                name=username,
-                email=email,
-                # phone=phone,
-            )
+            # group = Group.objects.get(name='customers')
+            # user.groups.add(group)
+            # Customer.objects.create(
+            #     user=user,
+            #     name=user.username,
+            #     email=email,
+            # )
             messages.success(request, 'account was created '+ username)
             return redirect('login')
 
