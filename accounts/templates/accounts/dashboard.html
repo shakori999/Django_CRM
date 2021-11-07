@@ -21,7 +21,7 @@
                 {% for customer in customers %}
                     <tr>
                         <td>
-                            <a href="{% url 'customer' customer.id %}" class='btn btn-sm btn-info'>
+                            <a href="{% url 'customer' %}" class='btn btn-sm btn-info'>
                                 {{ customer.name }}
                             </a>
                         </td>
@@ -36,10 +36,9 @@
         <h5>LAST 5 Orders</h5>
         <hr>
         <div class="card card-body">
-            {% comment %} <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_order' %}">Create Order</a> {% endcomment %}
+            {% comment %} <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_order' customer.id %}"">Create Order</a> {% endcomment %}
             <table class="table table-sm">
                 <tr>
-                    <th>Product</th>
                     <th>Date orderd</th>
                     <th>status</th>
                     <th>Update</th>
@@ -47,7 +46,6 @@
                 </tr>
                 {% for order in orders %}
                     <tr>
-                       <td>{{ order.product}}</td>
                        <td>{{ order.date_created}}</td>
                        <td>{{ order.status}}</td>
                        <td><a class='btn btn-sm btn-info' href="{% url 'update_order' order.id %}"> Update</a></td>
