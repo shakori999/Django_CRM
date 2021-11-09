@@ -56,7 +56,6 @@ def logoutUser(request):
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
-
     total_customers = customers.count()
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
@@ -72,11 +71,12 @@ def home(request):
     }
 
     return render(request, 'accounts/dashboard.html', context)
-@login_required
+
+@login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
-def userPage(request):
+def userPage(request,pk):
     orders = request.user.customer.order_set.all()
-    customer = request.user.customer
+    customer = Customer.objects.get(id=pk)
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
     pending = orders.filter(status='Pending').count()
@@ -93,8 +93,9 @@ def userPage(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
-def accountSettings(request):
-    customer = request.user.customer
+def accountSettings(request,pk):
+    # customer = request.user.customer
+    customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
 
     if request.method == "POST":
@@ -111,9 +112,9 @@ def accountSettings(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'customers'])
-def customer(request):
-    # customer = Customer.objects.get(id=pk)
-    customer = request.user.customer
+def customer(request,pk):
+    # customer = request.user.customer
+    customer = Customer.objects.get(id=pk)
 
     orders = customer.order_set.all()
     total_orders = orders.count()
@@ -144,6 +145,7 @@ def createOrder(request, pk):
 
     context = {
         'formset': formset,
+        'customer':customer,
         }
     return render(request, 'accounts/order_form.html', context)
 
