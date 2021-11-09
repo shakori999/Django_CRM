@@ -1,6 +1,6 @@
 from django.contrib.auth import decorators
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -13,14 +13,14 @@ def unauthenticated_user(view_func):
 
 def allowed_users(allowed_roles=[]):
     def decorator(view_func):
-        def wrapper_func(request,pk, *args, **kwargs):
+        def wrapper_func(request, *args, **kwargs):
 
             group = None
             if request.user.groups.exists():
                 group = request.user.groups.all()[0].name
 
             if group in allowed_roles:
-                return view_func(request,pk,  *args, **kwargs)
+                return view_func(request,  *args, **kwargs)
             else:
                 return HttpResponse('you are not allowrd')
         return wrapper_func

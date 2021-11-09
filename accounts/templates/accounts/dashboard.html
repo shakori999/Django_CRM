@@ -18,14 +18,14 @@
                     <th>phone</th>
                 </tr>
 
-                {% for customer in customers %}
+                {% for clint in customers %}
                     <tr>
                         <td>
-                            <a href="{% url 'customer' customer.id %}" class='btn btn-sm btn-info'>
-                                {{ customer.name }}
+                            <a href="{% url 'customer' clint.id %}" class='btn btn-sm btn-info'>
+                                {{ clint.name }}
                             </a>
                         </td>
-                        <td>{{ customer.phone}}</td>
+                        <td>{{ clint.phone}}</td>
                     </tr>
                 {% endfor %}
             </table>

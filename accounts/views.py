@@ -56,7 +56,9 @@ def logoutUser(request):
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
+
     total_customers = customers.count()
+
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
     pending = orders.filter(status='Pending').count()
@@ -74,9 +76,9 @@ def home(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
-def userPage(request,pk):
+def userPage(request):
     orders = request.user.customer.order_set.all()
-    customer = Customer.objects.get(id=pk)
+    clint = request.user.customer
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
     pending = orders.filter(status='Pending').count()
@@ -86,7 +88,7 @@ def userPage(request,pk):
         'total_orders': total_orders,
         'deliverd': deliverd,
         'pending': pending,
-        'customer': customer,
+        'clint': clint,
     }
 
     return render(request, 'accounts/user.html', context)
@@ -94,7 +96,7 @@ def userPage(request,pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
 def accountSettings(request,pk):
-    # customer = request.user.customer
+    clint = request.user.customer
     customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
 
@@ -105,7 +107,7 @@ def accountSettings(request,pk):
     context = {
         'form':form,
         'customer':customer,
-
+        'clint': clint,
     }
     return render(request, 'accounts/account_settings.html', context)
 
@@ -113,7 +115,7 @@ def accountSettings(request,pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'customers'])
 def customer(request,pk):
-    # customer = request.user.customer
+    clint = request.user.customer
     customer = Customer.objects.get(id=pk)
 
     orders = customer.order_set.all()
@@ -127,6 +129,7 @@ def customer(request,pk):
         'orders': orders,
         'total_orders': total_orders,
         'myFilter': myFilter,
+        'clint': clint,
     }
     return render(request, 'accounts/customer.html', context)
 
@@ -134,7 +137,7 @@ def customer(request,pk):
 @allowed_users(allowed_roles=['customers', 'admin'])
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','status','type','gifts','location','note',), extra=1)
-
+    clint = request.user.customer
     customer = Customer.objects.get(id=pk)
     formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
     if request.method == 'POST':
@@ -146,7 +149,8 @@ def createOrder(request, pk):
     context = {
         'formset': formset,
         'customer':customer,
-        }
+        'clint': clint
+    }
     return render(request, 'accounts/order_form.html', context)
 
 

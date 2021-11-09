@@ -18,7 +18,7 @@ class OrderForm(ModelForm):
 
 class CreateUserForm(UserCreationForm):
     class Meta:
-        model = User
+        model = User 
         fields = [
             'username',
             'email',
