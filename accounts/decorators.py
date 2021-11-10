@@ -1,6 +1,5 @@
-from django.contrib.auth import decorators
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect 
 
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -32,6 +31,7 @@ def admin_only(view_func):
         group = None
         if request.user.groups.exists():
             group = request.user.groups.all()[0].name
+
         
         if group == 'customers':
             return redirect('user-page')
