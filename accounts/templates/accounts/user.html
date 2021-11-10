@@ -21,7 +21,7 @@
                 {% for order in orders %}
                     <tr>
                         <td>{{ order.name}} </td>
-                        <td>{{ order.platform}} </td>
+                        <td>{{ order.get_platform_display}} </td>
                         <td>{{ order.phone}} </td>
                         <td>{{ order.price}} </td>
                         <td>{{ order.location}} </td>
