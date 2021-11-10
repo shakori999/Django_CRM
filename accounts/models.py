@@ -1,16 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 # from django.utils import timezone
-from django.contrib.auth.models import AbstractBaseUser 
 
 
 # Create your models here.
 
-class CustomeUser(AbstractBaseUser):
-    # identifier = models.CharField(max_length=40, unique=True)
-    # USERNAME_FIELD = 'identifier'
-    # EMAIL_FIELD = models.CharField(max_length=200, null=True)
-    pass
     
 
 class Customer(models.Model):

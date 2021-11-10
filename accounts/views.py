@@ -128,7 +128,7 @@ def customer(request,pk):
     return render(request, 'accounts/customer.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['customers', 'admin'])
+@allowed_users(allowed_roles=['customers'])
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','status','type','gifts','location','note',), extra=1)
     customer = Customer.objects.get(id=pk)
