@@ -104,6 +104,7 @@ def accountSettings(request):
             form.save()
     context = {
         'form':form,
+        'customer': customer,
     }
     return render(request, 'accounts/account_settings.html', context)
 

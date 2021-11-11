@@ -10,6 +10,7 @@ class CustomerForm(ModelForm):
         model = Customer
         fields = "__all__"
         exclude = ['user']
+        disabled = True
 
 class OrderForm(ModelForm):
     class Meta:
