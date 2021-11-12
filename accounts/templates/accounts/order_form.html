@@ -7,11 +7,9 @@
         <div class='card card-body'>
             <form method='POST' action=''>
                 {% csrf_token %}
-                {% for form in formset %}
                     {{ formset.management_form }}
-                    {{ form.as_p }}
+                    {{ form}}
                     <br>
-                {% endfor %}
                 <hr>
                 <button class='btn btn-primary' type='submit' name='submit'>Update</button>
             </form>

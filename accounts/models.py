@@ -13,12 +13,11 @@ class Customer(models.Model):
     wallet = MoneyField(max_digits=14,
                         decimal_places=0,
                         default_currency='IQD',
-                        null=True,
-                        editable=False,
-                        validators=[
-                            MinMoneyValidator(250)
-                        ])
-    gifts = models.IntegerField(null=True, editable=False)
+                        null=False,
+                        editable=True,
+                        default=0
+                        )
+    gifts = models.IntegerField(null=False, editable=False, default=0)
     phone = models.CharField(max_length=20, null=True)
     email = models.CharField(max_length=20, null=True)
     profile_pic = models.ImageField(default='logo.png', null=True, blank=True)
@@ -59,8 +58,8 @@ class Order(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     # date_delivered = models.DateTimeField(auto_now=False, null=True, .now())
     platform = models.CharField(max_length=20, null=True, choices=platform)
-    type = models.CharField(max_length=20, null=True, choices=type)
-    status = models.CharField(max_length=20, null=True, choices=STATUS)
+    type = models.CharField(max_length=20, null=True, choices=type, default='Books')
+    status = models.CharField(max_length=20, null=True, choices=STATUS, default='At Store')
 
     def __str__(self):
         return self.name

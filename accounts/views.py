@@ -121,9 +121,12 @@ def customer(request,pk):
             customer.wallet += order.price
 
         if order.gifts == True:
+            print(customer.gifts)
             customer.gifts -+ 1
+        
 
-    if total_orders % 10 == 0:
+    if total_orders % 10 == 0 and total_orders != 0:
+        print(customer.gifts)
         customer.gifts += 1
 
     
@@ -140,8 +143,12 @@ def customer(request,pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
 def createOrder(request, pk):
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','type','location','gifts','note',), extra=1)
     customer = Customer.objects.get(id=pk)
+    if customer.gifts < 1:
+        OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','location','note',), extra=1)
+    else:
+        OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','location','gifts','note',), extra=1)
+
     formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
     if request.method == 'POST':
         formset = OrderFormSet(request.POST, instance=customer)
