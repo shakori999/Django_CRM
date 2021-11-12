@@ -116,10 +116,19 @@ def customer(request,pk):
 
     orders = customer.order_set.all()
     total_orders = orders.count()
+    for order in orders:
+        if order.status == "Deliverd":
+            customer.wallet += order.price
 
+        if order.gifts == True:
+            customer.gifts -+ 1
+
+    if total_orders % 10 == 0:
+        customer.gifts += 1
+
+    
     myFilter = OrderFilter(request.GET, queryset=orders)
     orders = myFilter.qs
-
     context = {
         'customer':customer,
         'orders': orders,
@@ -131,7 +140,7 @@ def customer(request,pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
 def createOrder(request, pk):
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','status','type','gifts','location','note',), extra=1)
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','type','location','gifts','note',), extra=1)
     customer = Customer.objects.get(id=pk)
     formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
     if request.method == 'POST':

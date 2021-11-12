@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'django_filters',
+    'djmoney',
     
 ]
 
@@ -148,3 +149,4 @@ EMAIL_PORT = 875
 EMAIL_USER_TLS = True
 EMAIL_HOST_USER = 'shakori999@gmail.com'
 EMAIL_HOST_PASSWORD ='alshabahmfna1998'
+

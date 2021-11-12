@@ -1,22 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import User
+from djmoney.models.fields import MoneyField
+from djmoney.models.validators import MinMoneyValidator
 # from django.utils import timezone
 
 
 # Create your models here.
-
-    
-
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=30, null=True)
     address = models.CharField(max_length=500, null=True)
-    wallet = models.IntegerField(null=True, editable=False)
+    wallet = MoneyField(max_digits=14,
+                        decimal_places=0,
+                        default_currency='IQD',
+                        null=True,
+                        editable=False,
+                        validators=[
+                            MinMoneyValidator(250)
+                        ])
     gifts = models.IntegerField(null=True, editable=False)
     phone = models.CharField(max_length=20, null=True)
     email = models.CharField(max_length=20, null=True)
     profile_pic = models.ImageField(default='logo.png', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
 
     def __str__(self):
         return self.name
@@ -29,7 +36,7 @@ class Order(models.Model):
         ('IN', 'Instgram'),
     )
     phone = models.IntegerField()
-    price = models.IntegerField()
+    price = MoneyField(max_digits=14, decimal_places=0, default_currency='IQD')
     STATUS = (
         ('At Store', 'At Store'),
         ('In Stock', 'In Stock'),
