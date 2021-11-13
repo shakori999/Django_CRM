@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from djmoney.models.fields import MoneyField
-from djmoney.models.validators import MinMoneyValidator
 # from django.utils import timezone
 
 
@@ -14,7 +13,7 @@ class Customer(models.Model):
                         decimal_places=0,
                         default_currency='IQD',
                         null=False,
-                        editable=True,
+                        editable=False,
                         default=0
                         )
     gifts = models.IntegerField(null=False, editable=False, default=0)
@@ -22,7 +21,6 @@ class Customer(models.Model):
     email = models.CharField(max_length=20, null=True)
     profile_pic = models.ImageField(default='logo.png', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-
 
     def __str__(self):
         return self.name
