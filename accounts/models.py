@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.fields.related import ForeignKey
 from djmoney.models.fields import MoneyField
 # from django.utils import timezone
 
@@ -26,6 +27,16 @@ class Customer(models.Model):
         return self.name
 
 
+class Client(models.Model):
+    STATUS = (
+        ('FB','Facebook'),
+        ('IN','Insrgram'),
+    )
+    name = models.CharField(max_length=200)
+    phone = models.IntegerField()
+    location = models.CharField(max_length=200)
+    platform = models.CharField(max_length=20, null=True, choices=STATUS)
+
 class Order(models.Model):
     name = models.CharField(max_length=200)
     platform = (
@@ -48,7 +59,7 @@ class Order(models.Model):
         ('Makeup', 'Makeup'),
     )
     gifts = models.BooleanField(default=False)
-    location = models.TextField()
+    location = models.CharField(max_length=200)
     note = models.CharField(max_length=1000, null=True)
     customer = models.ForeignKey(Customer,
                                  null=True,
@@ -58,6 +69,10 @@ class Order(models.Model):
     platform = models.CharField(max_length=20, null=True, choices=platform)
     type = models.CharField(max_length=20, null=True, choices=type, default='Books')
     status = models.CharField(max_length=20, null=True, choices=STATUS, default='At Store')
+    client = ForeignKey(Client,
+                        null=True,
+                        on_delete=models.SET_NULL,
+                        )
 
     def __str__(self):
         return self.name
