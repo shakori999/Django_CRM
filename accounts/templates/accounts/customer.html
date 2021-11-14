@@ -66,6 +66,7 @@
                     <th>location</th>
                     <th>price</th>
                     <th>gifts</th>
+                    <th>status</th>
                     <th>update</th>
                 </tr>
 
@@ -76,6 +77,7 @@
                         <td>{{ order.location}} </td>
                         <td>{{ order.price}} </td>
                         <td>{{ order.gifts}} </td>
+                        <td class='btn btn-sm btn-info'>{{ order.status}} </td>
                         <td><a class='btn btn-sm btn-info' href='{% url "update_order" order.id %}'>Update</a></td>
                         {% comment %} <td><a class='btn btn-sm btn-danger' href='{% url "delete_order" order.id %}'>Delete</a></td> {% endcomment %}
                     </tr>

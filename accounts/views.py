@@ -157,7 +157,6 @@ def createOrder(request, pk):
                 platform = felid.get('platform')
             try:
                 client = Client.objects.get(
-                                            name = name,
                                             phone = phone,
                                             )
             except Client.DoesNotExist:
@@ -181,10 +180,10 @@ def createOrder(request, pk):
 @allowed_users(allowed_roles=['admin'])
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
-    form = OrderForm(instance=order)
+    form = UpdateOrderForm(instance=order)
 
     if request.method == 'POST':
-        form = OrderForm(request.POST , instance=order)
+        form = UpdateOrderForm(request.POST , instance=order)
         if form.is_valid():
             form.save()
             return redirect('/')
@@ -192,7 +191,7 @@ def updateOrder(request, pk):
     context = {
         'form': form,
         }
-    return render(request, 'accounts/order_form.html', context)
+    return render(request, 'accounts/update_order_form.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])

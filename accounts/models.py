@@ -36,7 +36,7 @@ class Customer(models.Model):
         orders = Order.objects.filter(customer=self)
 
         total_orders = orders.count()
-        total_gifts = total_orders // 5
+        total_gifts = total_orders // 10
         for order in orders:
             if order.gifts is True:
                 self.gifts -= 1
@@ -87,7 +87,7 @@ class Order(models.Model):
         ('Makeup', 'Makeup'),
     )
     gifts = models.BooleanField(default=False)
-    location = models.CharField(max_length=200)
+    location = models.CharField(max_length=100)
     note = models.CharField(max_length=1000, null=True)
     customer = models.ForeignKey(Customer,
                                  null=True,

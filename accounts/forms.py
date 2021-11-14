@@ -17,6 +17,13 @@ class OrderForm(ModelForm):
         model = Order
         fields = '__all__'
 
+class UpdateOrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = [
+            'status',
+        ]
+
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User 
