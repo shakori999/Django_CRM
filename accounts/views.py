@@ -1,3 +1,6 @@
+from django.db.models import query
+from django.db.models.fields import Field
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect 
 from django.forms import inlineformset_factory
 from django.contrib import messages
@@ -113,22 +116,8 @@ def accountSettings(request):
 @allowed_users(allowed_roles=['admin', 'customers'])
 def customer(request,pk):
     customer = Customer.objects.get(id=pk)
-
     orders = customer.order_set.all()
     total_orders = orders.count()
-    for order in orders:
-        if order.status == "Deliverd":
-            customer.wallet += order.price
-
-        if order.gifts == True:
-            print(customer.gifts)
-            customer.gifts -+ 1
-        
-
-    if total_orders % 10 == 0 and total_orders != 0:
-        print(customer.gifts)
-        customer.gifts += 1
-
     
     myFilter = OrderFilter(request.GET, queryset=orders)
     orders = myFilter.qs
@@ -144,21 +133,47 @@ def customer(request,pk):
 @allowed_users(allowed_roles=['customers'])
 def createOrder(request, pk):
     customer = Customer.objects.get(id=pk)
-    if customer.gifts < 1:
-        OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','location','note',), extra=1)
-    else:
+    name = ''
+    phone = ''
+    location = ''
+    platform = ''
+    if customer.discount() > 0 :
         OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','location','gifts','note',), extra=1)
-
-    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
+    else:
+        OrderFormSet = inlineformset_factory(Customer, Order, fields=('name','platform','phone','price','location','note',), extra=1)
+    form = OrderFormSet(queryset=Order.objects.none(), instance=customer)
     if request.method == 'POST':
-        formset = OrderFormSet(request.POST, instance=customer)
-        if formset.is_valid():
-            formset.save()
+        form = OrderFormSet(request.POST, instance=customer)
+        name = ''
+        phone = ''
+        location = ''
+        platform = ''
+        if form.is_valid():
+            form.save()
+            for felid in form.cleaned_data:
+                name = felid.get('name')
+                phone = felid.get('phone')
+                location = felid.get('location')
+                platform = felid.get('platform')
+            try:
+                client = Client.objects.get(
+                                            name = name,
+                                            phone = phone,
+                                            )
+            except Client.DoesNotExist:
+                client = Client.objects.create(
+                                                name=name,
+                                                phone = phone,
+                                                location = location,
+                                                platform = platform,
+                                            )
+                client.save()    
             return redirect('/')
 
     context = {
-        'formset': formset,
+        'form': form,
     }
+
     return render(request, 'accounts/order_form.html', context)
 
 

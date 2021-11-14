@@ -14,14 +14,33 @@ class Customer(models.Model):
                         decimal_places=0,
                         default_currency='IQD',
                         null=False,
-                        editable=False,
+                        editable=True,
                         default=0
                         )
-    gifts = models.IntegerField(null=False, editable=False, default=0)
-    phone = models.CharField(max_length=20, null=True)
+    gifts = models.IntegerField(null=False, editable=True, default=0)
+    phone = models.CharField(max_length=11, null=True)
     email = models.CharField(max_length=20, null=True)
     profile_pic = models.ImageField(default='logo.png', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def budget(self):
+        orders = Order.objects.filter(customer=self)
+        total_price = 0
+        for order in orders:
+            deleverd_order = orders.filter(status='Deliverd')
+            if order in deleverd_order:
+                total_price+= order.price
+        return self.wallet + total_price
+
+    def discount(self):
+        orders = Order.objects.filter(customer=self)
+
+        total_orders = orders.count()
+        total_gifts = total_orders // 5
+        for order in orders:
+            if order.gifts is True:
+                self.gifts -= 1
+        return self.gifts + total_gifts
 
     def __str__(self):
         return self.name
@@ -32,18 +51,27 @@ class Client(models.Model):
         ('FB','Facebook'),
         ('IN','Insrgram'),
     )
-    name = models.CharField(max_length=200)
-    phone = models.IntegerField()
-    location = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=True)
+    phone = models.CharField(max_length=11,null=True)
+    location = models.CharField(max_length=200, null=True)
     platform = models.CharField(max_length=20, null=True, choices=STATUS)
 
+    # def add_client(self):
+    #     orders = Order.objects.get(all)
+    #     for order in orders:
+    #         if order.phone == self.phone:
+    #             self
+                
+
+    def __str__(self):
+        return self.name
 class Order(models.Model):
     name = models.CharField(max_length=200)
     platform = (
         ('FB', 'Facebook'),
         ('IN', 'Instgram'),
     )
-    phone = models.IntegerField()
+    phone = models.CharField(max_length=11)
     price = MoneyField(max_digits=14, decimal_places=0, default_currency='IQD')
     STATUS = (
         ('At Store', 'At Store'),
@@ -71,6 +99,7 @@ class Order(models.Model):
     status = models.CharField(max_length=20, null=True, choices=STATUS, default='At Store')
     client = ForeignKey(Client,
                         null=True,
+                        blank=True,
                         on_delete=models.SET_NULL,
                         )
 

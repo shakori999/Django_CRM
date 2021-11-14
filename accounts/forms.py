@@ -27,3 +27,12 @@ class CreateUserForm(UserCreationForm):
             'password2',
         ]
 
+class CreateClientForm(ModelForm):
+    class Meta:
+        models = Client
+        fields = [
+            'name',
+            'phone',
+            'location',
+            'platform',
+        ]
