@@ -14,10 +14,10 @@ class Customer(models.Model):
                         decimal_places=0,
                         default_currency='IQD',
                         null=False,
-                        editable=True,
+                        editable=False,
                         default=0
                         )
-    gifts = models.IntegerField(null=False, editable=True, default=0)
+    gifts = models.IntegerField(null=False, editable=False, default=0)
     phone = models.CharField(max_length=11, null=True)
     email = models.CharField(max_length=20, null=True)
     profile_pic = models.ImageField(default='logo.png', null=True, blank=True)
