@@ -64,6 +64,7 @@ def home(request):
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
     pending = orders.filter(status='Pending').count()
+    deliverd_paid = orders.filter(status='D&P').count()
 
     context = {
         'orders': orders, 
@@ -72,6 +73,8 @@ def home(request):
         'total_orders': total_orders,
         'deliverd': deliverd,
         'pending': pending,
+        'dp': deliverd_paid,
+        
     }
 
     return render(request, 'accounts/dashboard.html', context)
@@ -83,6 +86,7 @@ def userPage(request):
     clint = request.user.customer
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
+    deliverd_paid = orders.filter(status='D&P').count()
     pending = orders.filter(status='Pending').count()
 
     context = {
@@ -91,6 +95,7 @@ def userPage(request):
         'deliverd': deliverd,
         'pending': pending,
         'clint': clint,
+        'dp': deliverd_paid,
     }
 
     return render(request, 'accounts/user.html', context)

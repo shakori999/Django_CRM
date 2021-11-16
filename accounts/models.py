@@ -32,6 +32,17 @@ class Customer(models.Model):
                 total_price+= order.price
         return self.wallet + total_price
 
+    def paid(self):
+        orders = Order.objects.filter(Customer=self)
+        paid_order = orders.filter(status='Deliverd&paid')
+        paid = 0
+        for order in paid_order:
+            paid += order.price
+        self.wallet -= paid
+        return self.wallet
+
+
+
     def discount(self):
         orders = Order.objects.filter(customer=self)
 
@@ -55,12 +66,6 @@ class Client(models.Model):
     phone = models.CharField(max_length=11,null=True)
     location = models.CharField(max_length=200, null=True)
     platform = models.CharField(max_length=20, null=True, choices=STATUS)
-
-    # def add_client(self):
-    #     orders = Order.objects.get(all)
-    #     for order in orders:
-    #         if order.phone == self.phone:
-    #             self
                 
 
     def __str__(self):
@@ -80,6 +85,7 @@ class Order(models.Model):
         ('Deliverd', 'Deliverd'),
         ('Rejected', 'Rejected'),
         ('Problem', 'Problem'),
+        ('D&P', 'Deliverd&paid')
     )
     type = (
         ('Books', 'Books'),
@@ -88,7 +94,7 @@ class Order(models.Model):
     )
     gifts = models.BooleanField(default=False)
     location = models.CharField(max_length=100)
-    note = models.CharField(max_length=1000, null=True)
+    note = models.CharField(max_length=1000, null=True, blank=True)
     customer = models.ForeignKey(Customer,
                                  null=True,
                                  on_delete=models.SET_NULL)
