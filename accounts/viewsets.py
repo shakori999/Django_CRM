@@ -1,4 +1,4 @@
-from rest_framework import viewsets, routers
+from rest_framework import viewsets 
 from rest_framework import permissions
 
 from .models import *
@@ -10,11 +10,11 @@ class UserviewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer 
-    permission_classes = [permissions.IsAuthenticated]
 
-router = routers.DefaultRouter()
-router.register('users', UserviewSet)
-router.register('orders', OrderViewSet)
+class OrderViewSet(viewsets.ModelViewSet):
+    # queryset = Order.objects.all()
+    serializer_class = OrderSerializer 
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.customer.order_set.all()

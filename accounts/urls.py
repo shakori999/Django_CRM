@@ -2,7 +2,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from rest_framework import routers
 
-from .viewsets import router as user_router
+from .routers import router as user_router
 
 from . import views
 
