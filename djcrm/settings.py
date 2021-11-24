@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'django_filters',
     'djmoney',
+    'rest_framework',
     
 ]
 
@@ -150,3 +151,11 @@ EMAIL_USER_TLS = True
 EMAIL_HOST_USER = 'shakori999@gmail.com'
 EMAIL_HOST_PASSWORD ='alshabahmfna1998'
 
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

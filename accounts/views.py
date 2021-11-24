@@ -1,16 +1,15 @@
-from django.db.models import query
-from django.db.models.fields import Field
-from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect 
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+
 from .filters import *
 from .models import *
 from .forms import *
 from .decorators import *
+from .serializers import *
 # Create your views here.
 
 @unauthenticated_user
@@ -213,3 +212,6 @@ def deleteOrder(request, pk):
 
 
     return render(request, 'accounts/delete.html', context)
+
+
+

@@ -1,7 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from rest_framework import routers
+
+from .viewsets import router as user_router
 
 from . import views
+
+
 
 urlpatterns =  [
 
@@ -38,5 +43,7 @@ urlpatterns =  [
         'reset_password_complete/', 
         auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_done.html'), 
         name='password_reset_complete'),
+    path('api/', include(user_router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
