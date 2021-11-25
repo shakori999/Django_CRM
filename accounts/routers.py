@@ -4,5 +4,6 @@ from .viewsets import *
 
 
 router = routers.DefaultRouter()
-router.register('users', UserviewSet, basename='users')
+router.register('customers', CustomerViewSet, basename='customers')
+router.register('clients', ClientViewSet, basename='clients')
 router.register('orders', OrderViewSet, basename='orders')

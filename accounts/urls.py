@@ -1,7 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from rest_framework import routers
-
+from rest_framework_jwt.views import obtain_jwt_token
 from .routers import router as user_router
 
 from . import views
@@ -45,5 +44,6 @@ urlpatterns =  [
         name='password_reset_complete'),
     path('api/', include(user_router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-token-auth/', obtain_jwt_token),
 ]
 
