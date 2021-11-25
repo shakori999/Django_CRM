@@ -31,6 +31,18 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     
     def create(self, validated_data):
         order = Order(**validated_data)
-        order.user = self.context['request'].user
+        order.customer = self.context['request'].user.customer
+        try:
+            order.client = Client.objects.get(
+                                        phone = order.phone,
+                                        )
+        except Client.DoesNotExist:
+            order.client = Client.objects.create(
+                                            name=order.name,
+                                            phone = order.phone,
+                                            location = order.location,
+                                            platform = order.platform,
+                                        )
+            order.client.save()    
         order.save()
         return order

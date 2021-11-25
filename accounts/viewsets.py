@@ -1,6 +1,6 @@
 from rest_framework import viewsets 
 from rest_framework import permissions
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action 
 
 from .models import *
 from .serializers import *
@@ -28,3 +28,4 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.customer.order_set.all()
+     
