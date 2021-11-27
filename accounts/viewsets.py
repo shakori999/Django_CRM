@@ -1,4 +1,3 @@
-from types import prepare_class
 from rest_framework import viewsets 
 from rest_framework import permissions
 from django.contrib.auth.models import User
@@ -28,7 +27,6 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer 
-    # permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return self.request.user.customer.order_set.all()

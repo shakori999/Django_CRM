@@ -11,10 +11,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                     'email', 'last_login', 'date_joined')
         read_only_fields = ('username','last_login', 'date_joined')
 
-    def update(self, instance, validated_data):
-        print(f'this is the print {instance.first_name}')
-        instance.save()
-        return instance
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -38,7 +34,6 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('customer','client','name','platform', 'phone', 'price', 'location', 'type')
     
     def create(self, validated_data):
-        print(validated_data)
         order = Order(**validated_data)
         order.customer = self.context['request'].user.customer
         try:
