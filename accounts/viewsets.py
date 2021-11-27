@@ -6,17 +6,23 @@ from .models import *
 from .serializers import *
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
-
+    permission_classes = [permissions.AllowAny]
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
 
 class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
-
+    
     def get_queryset(self):
         return Customer.objects.filter(id=self.request.user.customer.id)
+
+class CustomersViewSet(viewsets.ModelViewSet):
+    serializer_class = CustomerSerializer
+    permission_classes = [permissions.IsAdminUser]
+    
+    def get_queryset(self):
+        return Customer.objects.all()
 
 class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
