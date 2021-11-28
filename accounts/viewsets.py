@@ -5,9 +5,14 @@ from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
 
-class UserViewSet(viewsets.ModelViewSet):
+class SignViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
 

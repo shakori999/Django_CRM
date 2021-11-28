@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'djmoney',
     'rest_framework',
+    'guardian',
     
 ]
 
@@ -155,8 +156,12 @@ EMAIL_HOST_PASSWORD ='alshabahmfna1998'
 
 
 
-#rest famework Configuration
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
 
+#rest famework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from .models import *
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    
+    password = serializers.HiddenField(default='')
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name',

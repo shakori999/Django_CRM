@@ -1,11 +1,14 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
+
+
 from .models import * 
 
 # Register your models here.
 admin.site.register(Customer)
 admin.site.register(Client)
 @admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(GuardedModelAdmin):
     list_display = (
         'status',
         'customer',
