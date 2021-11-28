@@ -5,6 +5,7 @@ from .models import *
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     # password = serializers.HiddenField(default='')
+    
     class Meta:
         model = User
         fields = ('id','username', 'first_name', 'last_name',
@@ -26,9 +27,17 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+    order = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='orders-detail'
+    )
+    # orders = Customer.objects
     class Meta:
         model = Customer 
-        fields = ('name','address', 'phone','gifts', 'email' )
+        fields = ('name','address', 'phone','gifts', 'email',
+                    'order'
+                    )
         read_only_fields = ('gifts',)
 
 
@@ -40,11 +49,14 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    customer = serializers.StringRelatedField(many=False)
+    customer = serializers.HyperlinkedRelatedField(
+       view_name='customer-detail' ,
+       read_only=True,
+    )
     client = serializers.StringRelatedField(many=False)
     class Meta:
         model = Order
-        fields = ('customer','client','name','platform', 'phone', 'price', 'location', 'type')
+        fields = ('id','customer','client','name','platform', 'phone', 'price', 'location', 'type')
     
     def create(self, validated_data):
         order = Order(**validated_data)

@@ -98,6 +98,7 @@ class Order(models.Model):
     note = models.CharField(max_length=1000, null=True, blank=True)
     customer = models.ForeignKey(Customer,
                                  null=True,
+                                 related_name='order',
                                  on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     # date_delivered = models.DateTimeField(auto_now=False, null=True, .now())
