@@ -4,15 +4,16 @@ from django.contrib.auth.models import User
 from .models import *
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    password = serializers.HiddenField(default='')
+    # password = serializers.HiddenField(default='')
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name',
+        fields = ('id','username', 'first_name', 'last_name',
                     'email', 'last_login', 'date_joined','password',)
-        read_only_fields = ('last_login', 'date_joined')
+        read_only_fields = ('username','password','last_login', 'date_joined')
     
     def create(self, validated_data):
         validated_data['password'] = self.context['request'].data['password']
+        validated_data['username'] = self.context['request'].data['username']
         user = User.objects.create_user(**validated_data)
         return user 
 

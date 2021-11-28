@@ -16,6 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
 
+
 class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
     
@@ -29,12 +30,16 @@ class CustomersViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Customer.objects.all()
 
+
+
 class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     permission_classes =[permissions.IsAdminUser] 
 
     def get_queryset(self):
         return Client.objects.all()
+
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer 
