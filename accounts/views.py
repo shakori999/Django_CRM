@@ -81,7 +81,7 @@ def home(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customers'])
 def userPage(request):
-    orders = request.user.customer.order_set.all()
+    orders = request.user.customer.order.all()
     clint = request.user.customer
     total_orders = orders.count()
     deliverd = orders.filter(status='Deliverd').count()
@@ -120,7 +120,7 @@ def accountSettings(request):
 @allowed_users(allowed_roles=['admin', 'customers'])
 def customer(request,pk):
     customer = Customer.objects.get(id=pk)
-    orders = customer.order_set.all()
+    orders = customer.order.all()
     total_orders = orders.count()
     
     myFilter = OrderFilter(request.GET, queryset=orders)
